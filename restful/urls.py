@@ -18,37 +18,20 @@ from django.contrib import admin
 from django.conf.urls import url, include
 from apitest.models import  *
 from rest_framework import routers, serializers, viewsets
+from apitest.serializer import *
+from apitest import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
-# Serializers define the API representation.
-class personSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = person
-        fields = ('created', 'title', 'name', 'age','sex')
-
-# ViewSets define the view behavior.
-class personViewSet(viewsets.ModelViewSet):
-    queryset = person.objects.all()
-    serializer_class = personSerializer
-
-class profitSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = profit
-        fields = ('year', 'quarter', 'stk_code', 'stk_name','roe','netmargin','grossmargin','netprofit')
-
-# ViewSets define the view behavior.
-class profitViewSet(viewsets.ModelViewSet):
-    queryset = profit.objects.all()
-    serializer_class = profitSerializer
-
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'person', personViewSet)
-router.register(r'profit', profitViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^api', include(router.urls)),
+    # url(r'^api', include(router.urls)),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/', admin.site.urls),
+    url(r'^home/', views.home,name='home'),
+    url(r'^profit_list/$', views.profit_list,name='profit_list'),
+    #url(r'^person_list/$', views.person_list, name='person_list'),
+    #url(r'^profit_list/(?P<code>\d+)/$', views.profit_list,name='profit_list'),
 ]
+# urlpatterns = format_suffix_patterns(urlpatterns)
